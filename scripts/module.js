@@ -78,11 +78,12 @@ async function fixBackground(scene, imgSrc) {
   await cleanupFixTiles(scene);
 
   // Get filepicker based on version
+  let FilePickerImpl = null;
   if (+game.version.split(".")[0] >= 13) {
-    let FilePickerImpl = foundry.applications.apps.FilePicker.implementation;
+    FilePickerImpl = foundry.applications.apps.FilePicker.implementation;
   }
   else {
-      let FilePickerImpl = FilePicker;
+    FilePickerImpl = FilePicker;
   }
 
   // Ensure tile storage directory exists
@@ -183,7 +184,7 @@ async function fixBackground(scene, imgSrc) {
 
 async function cleanupFixTiles(scene) {
   const tiles = scene.tiles.filter((t) => foundry.utils.getProperty(t, `flags.${MODULE_ID}.generated`) === true).map((t) => t._id);
-  if (tiles) {
+  if (tiles && tiles.length) {
   	await scene.deleteEmbeddedDocuments("Tile", tiles);
   	ui.notifications.info("Removed old background tiles.");
   }
