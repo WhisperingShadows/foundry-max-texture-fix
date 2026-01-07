@@ -176,9 +176,16 @@ async function fixBackground(scene, imgSrc) {
   await scene.createEmbeddedDocuments("Tile", tiles);
   await scene.update({ "background.src": null });
   
-  ui.notifications.success(
-    `${MODULE_ID} | Background successfully split into ${tiles.length} tiles (${numXTiles}x${numYTiles}).`
-  );
+  if (+game.version.split(".")[0] >= 13) {
+    ui.notifications.success(
+      `${MODULE_ID} | Background successfully split into ${tiles.length} tiles (${numXTiles}x${numYTiles}).`
+    );
+  }
+  else {
+    ui.notifications.info(
+      `${MODULE_ID} | Background successfully split into ${tiles.length} tiles (${numXTiles}x${numYTiles}).`
+    );
+  }
 
 }
 
