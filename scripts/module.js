@@ -3,6 +3,7 @@
 let MODULE_ID = null;
 let TILE_DIRECTORY = null;
 
+
 Hooks.once("init", () => {
   MODULE_ID = "bg-texture-size-fix";
   TILE_DIRECTORY = `worlds/${game.world.id}/assets/bg-tiles`;
@@ -76,8 +77,15 @@ async function fixBackground(scene, imgSrc) {
   // Remove any background tiles from previous generations
   await cleanupFixTiles(scene);
 
+  // Get filepicker based on version
+  if (+game.version.split(".")[0] >= 13) {
+    let FilePickerImpl = foundry.applications.apps.FilePicker.implementation;
+  }
+  else {
+      let FilePickerImpl = FilePicker;
+  }
+
   // Ensure tile storage directory exists
-  let FilePickerImpl = foundry.applications.apps.FilePicker.implementation;
   try {
     await FilePickerImpl.createDirectory("data", TILE_DIRECTORY);
   } catch (err) {
